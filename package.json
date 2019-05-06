@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage --detectOpenHandles",
-    "test:watch": "jest --watch",
-    "start": "tsc && node out/src/index.js"
+    "test:watch": "jest --watch --coverage",
+    "lint": "tslint -p tsconfig.json",
+    "build": "tsc",
+    "start": "node out/src/index.js"
   },
   "repository": {
     "type": "git",
@@ -29,14 +31,16 @@
     "jest": "^24.7.1",
     "nock": "^10.0.6",
     "supertest": "^4.0.2",
-    "ts-jest": "^24.0.2"
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.16.0"
   },
   "dependencies": {
-    "typescript": "^3.4.5",
     "ajv": "^6.10.0",
     "async-middleware": "^1.2.1",
+    "banca-movil-schemas": "^1.0.0",
     "body-parser": "^1.19.0",
     "express": "^4.16.4",
-    "got": "^9.6.0"
+    "got": "^9.6.0",
+    "typescript": "^3.4.5"
   }
 }

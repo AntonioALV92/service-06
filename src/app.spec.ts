@@ -1,8 +1,8 @@
-import nock from 'nock';
-import app from './app';
-import supertest from 'supertest';
 import http from 'http';
+import nock from 'nock';
+import supertest from 'supertest';
 import routes from '../routes.json';
+import app from './app';
 import * as fixtures from './fixtures';
 
 
@@ -28,10 +28,10 @@ describe(`al ejecutar el servidor`, () => {
     const response = await request
       .post('/general/registroInicial')
       .send({
-        name: '33'
+        name: '33',
       });
     expect(response.status).toBe(400);
-    expect(response.body.code).toBe(-1);
+    expect(response.body.code).toBe(-3);
     expect(response.body.errors).toBeInstanceOf(Array);
   });
 
@@ -41,38 +41,34 @@ describe(`al ejecutar el servidor`, () => {
     afterEach(() => {
       nock.cleanAll();
       nock.recorder.clear();
-    })
+    });
 
     test(`si el servicio de banxico responde correctamente`, async () => {
       let bodyRequestBanxico: string = '';
       let contentTypeRequestBanxico: string = '';
       nock(routes.registroInicial)
-        .filteringRequestBody(function (body) {
+        .filteringRequestBody(function(body) {
           // Obtenemos el body hacia banxico
           bodyRequestBanxico = body;
           return '*';
         })
-        .matchHeader('content-type', function (val) {
+        .matchHeader('content-type', function(val) {
           // Obtenemos el contentType enviado hacia banxico
           contentTypeRequestBanxico = val;
           return true;
         })
         .post('')
         .reply(200, {
-          edoPet: 0
+          edoPet: 0,
         });
 
       const response = await request
         .post('/general/registroInicial')
-        .send({
-          name: 33,
-        });
+        .send(fixtures.registroInicialRequest);
 
       // El body que va hacia el servicio de Banxico debe ser text/plain con
       // una d= al inicio del json, en string el body
-      expect(bodyRequestBanxico).toEqual('d=' + JSON.stringify({
-        name: 33
-      }));
+      expect(bodyRequestBanxico).toEqual('d=' + JSON.stringify(fixtures.registroInicialRequest));
       expect(contentTypeRequestBanxico).toBe('text/plain');
 
       // Si todo es correcto Banxico retorna un 200
@@ -80,7 +76,7 @@ describe(`al ejecutar el servidor`, () => {
       expect(response.header['content-type']).toContain('application/json');
       expect(response.status).toBe(200);
       expect(response.body).toEqual({
-        edoPet: 0
+        edoPet: 0,
       });
     });
 
@@ -92,9 +88,7 @@ describe(`al ejecutar el servidor`, () => {
 
       const response = await request
         .post('/general/registroInicial')
-        .send({
-          name: 33
-        });
+        .send(fixtures.registroInicialRequest);
 
       // Este servicio si debe responder con JSON
       expect(response.header['content-type']).toContain('application/json');
@@ -103,7 +97,7 @@ describe(`al ejecutar el servidor`, () => {
       expect(response.body.code).toEqual(-1);
       expect(response.body.message).toContain('Error al procesar respuesta');
       expect(response.body.message).toContain('error banxico string');
-    })
+    });
 
 
 
@@ -114,14 +108,12 @@ describe(`al ejecutar el servidor`, () => {
 
       const response = await request
         .post('/general/registroInicial')
-        .send({
-          name: 33
-        });
+        .send(fixtures.registroInicialRequest);
       expect(response.status).toBe(503);
       // console.log("response.body:", response.body);
-      expect(response.body.code).toBe(-404)
+      expect(response.body.code).toBe(-404);
       expect(response.body.details)
-        .toBe(JSON.stringify(fixtures.respuestaErrorBanxico))
-    })
-  })
+        .toBe(JSON.stringify(fixtures.respuestaErrorBanxico));
+    });
+  });
 });
