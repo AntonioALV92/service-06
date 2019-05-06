@@ -8,17 +8,17 @@ stages:
 lint:
   stage: test
   script:
-  - npm install --registry=https://registry.npmjs.com/
+  - npm install
   - npm run lint
 
 unit-testing:
   stage: test
   script:
-  - npm install --registry=https://registry.npmjs.com/
+  - npm install
   - npm test
 
 build-test:
   stage: test
   script:
-  - npm install --registry=https://registry.npmjs.com/
+  - npm install
   - npm run build
