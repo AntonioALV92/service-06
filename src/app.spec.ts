@@ -47,12 +47,12 @@ describe(`al ejecutar el servidor`, () => {
       let bodyRequestBanxico: string = '';
       let contentTypeRequestBanxico: string = '';
       nock(routes.registroInicial)
-        .filteringRequestBody(function(body) {
+        .filteringRequestBody((body) => {
           // Obtenemos el body hacia banxico
           bodyRequestBanxico = body;
           return '*';
         })
-        .matchHeader('content-type', function(val) {
+        .matchHeader('content-type', (val) => {
           // Obtenemos el contentType enviado hacia banxico
           contentTypeRequestBanxico = val;
           return true;
@@ -68,7 +68,7 @@ describe(`al ejecutar el servidor`, () => {
 
       // El body que va hacia el servicio de Banxico debe ser text/plain con
       // una d= al inicio del json, en string el body
-      expect(bodyRequestBanxico).toEqual('d=' + JSON.stringify(fixtures.registroInicialRequest));
+      expect(bodyRequestBanxico).toEqual('d=' + JSON.stringify(fixtures.registroInicialRequestBanxico));
       expect(contentTypeRequestBanxico).toBe('text/plain');
 
       // Si todo es correcto Banxico retorna un 200

@@ -4,6 +4,7 @@ import { RegistroInicialController } from './controllers';
 import { ErrorHandler } from './middlewares/ErrorHandler';
 import { JSONSchema } from './middlewares/JSONSchemaValidator';
 // import { requests } from 'banca-movil-schemas/schemas';
+import { Mapper } from './middlewares/Mapper';
 
 const schemas = require('banca-movil-schemas/schemas');
 const app: express.Application = express();
@@ -12,13 +13,12 @@ const app: express.Application = express();
 // Middlewares Before controllers
 app.use(bodyParser.json());
 
-
-// Controllers
-// Si se desea validar la petición contra un JSON Schema, entonces
-// este se debe de agregar en el arreglo de handlers, antes del controller
-// app.use('/general', [JSONSchema(testSchema), RegistroInicialController]);
 const schema = schemas.requests.RegistroInicialRequest;
-app.use('/general', [JSONSchema(schema), RegistroInicialController]);
+app.use('/general', [
+    JSONSchema(schema), // Valida petición contra JSON Schema
+    Mapper,  // Mapea campos de petición a como se requiere por banxico
+    RegistroInicialController, // Manda la petición a banxico
+]);
 
 // Error Handler
 app.use(ErrorHandler);

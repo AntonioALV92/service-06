@@ -12,3 +12,14 @@ export const registroInicialRequest = {
     },
     numeroCelular: 0,
 };
+
+export const registroInicialRequestBanxico = {
+    idH: "string",
+    ia: {
+        fab: "string",
+        mod: "string",
+        so: "string",
+        vSO: "string",
+    },
+    nc: 0,
+};
