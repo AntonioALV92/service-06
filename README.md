@@ -8,7 +8,7 @@ Este proyecto contiene el servicio de middleware codi-01-registroInicial que es 
 Este servicio expone 2 rutas:
 
 * ### **<span style="color:skyblue">POST</span> /general/registroInicial**
-Apunta al servicio de regustri inicial de banxico, cuya definición puede encontrarse aquí:
+Apunta al servicio de regustro inicial de banxico, cuya definición puede encontrarse aquí:
 https://multiva-codi.gitlab.io/banca-movil-schemas/#operation/codi-01-registroInicial
 
 * ### **<span style="color:limegreen">GET</span>  /version**
