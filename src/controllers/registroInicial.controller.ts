@@ -47,7 +47,7 @@ router.post("/registroInicial", wrap(async (req: Request, res: Response) => {
         logger.info(separador);
 
     } catch (e) {
-        logger.error('Error al procesar respuesta: "' + response.body + '"');
+        throw new Error('Error al procesar respuesta: "' + response.body + '"');
     }
 }));
 
