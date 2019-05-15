@@ -2,6 +2,7 @@ import { wrap } from 'async-middleware';
 import { Request, Response, Router } from 'express';
 import got from 'got';
 import routes from '../../routes.json';
+import { mapear } from '../middlewares/Mapper';
 
 const router: Router = Router();
 
@@ -19,7 +20,12 @@ router.post("/registroInicial", wrap(async (req: Request, res: Response) => {
 
     try {
         const respuesta = JSON.parse(response.body);
-        res.status(200).send(respuesta);
+        const respuestaMapeada = mapear(respuesta, {
+            dv: 'digitoVerificador',
+            edoPet: 'estadoPeticion',
+            gId: 'googleId',
+        });
+        res.status(200).send(respuestaMapeada);
     } catch (e) {
         throw new Error('Error al procesar respuesta: "' + response.body + '"');
     }

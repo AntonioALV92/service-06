@@ -1,8 +1,8 @@
 import http from 'http';
 import nock from 'nock';
 import supertest from 'supertest';
-import routes from '../routes.json';
 import packageJson from '../package.json';
+import routes from '../routes.json';
 import app from './app';
 import * as fixtures from './fixtures';
 
@@ -31,7 +31,7 @@ describe(`al ejecutar el servidor`, () => {
       expect(response.body).toBeInstanceOf(Object);
       expect(response.body.version).toEqual(packageJson.version);
     });
-  })
+  });
 
   describe('al ejecutar un POST /general/registroInicial', () => {
     describe(`Si la petición no cumple con la estructura`, () => {
@@ -71,6 +71,8 @@ describe(`al ejecutar el servidor`, () => {
           })
           .post('')
           .reply(200, {
+            gId: "a5145da24bd47257cc581126f2a3b33d",
+            dv: 0,
             edoPet: 0,
           });
 
@@ -87,8 +89,11 @@ describe(`al ejecutar el servidor`, () => {
         // console.log("response:", response.header['content-type']);
         expect(response.header['content-type']).toContain('application/json');
         expect(response.status).toBe(200);
+        // Debería de mapear la respuesta del servicio de banxico
         expect(response.body).toEqual({
-          edoPet: 0,
+          estadoPeticion: 0,
+          digitoVerificador: 0,
+          googleId: 'a5145da24bd47257cc581126f2a3b33d',
         });
       });
 

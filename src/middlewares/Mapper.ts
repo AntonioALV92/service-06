@@ -7,7 +7,7 @@ import { isObject } from "util";
 // por el valor de los mismos, esto se hace de forma recursiva en cada
 // objeto y los objetos anidados, esta función no funciona si el objeto
 // no tiene arreglos
-const mapear = (object: any, m: any) => {
+export const mapear = (object: any, m: any) => {
     const mapped: any = {};
     Object.keys(object).forEach((k) => {
         if (!isObject(object[k])) {
