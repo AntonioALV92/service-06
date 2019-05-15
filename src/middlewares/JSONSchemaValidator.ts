@@ -2,6 +2,8 @@ import Ajv from 'ajv';
 import { Request, Response } from 'express';
 import { Error } from '../models/Error';
 
+const LoggerColors = require('logger-colors');
+const logger = new LoggerColors();
 
 export function JSONSchema(schema: object) {
 
@@ -18,6 +20,11 @@ export function JSONSchema(schema: object) {
                 errors: validate.errors,
                 message: "La petición no cumple con la estructura definida",
             };
+
+            logger.error('ERROR DE PETICIÓN', true);
+            logger.error(JSON.stringify(e), false);
+            logger.error('');
+            logger.info('----------------------------------------------------');
 
             res.status(400).send(e);
         }
