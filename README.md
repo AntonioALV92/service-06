@@ -1,4 +1,4 @@
-# codi-01-registroInicial
+# codi-06-validacionCuentasBeneficiarias
 
 Este proyecto contiene el servicio de middleware codi-06-validacionCuentasBeneficiarias que es la capa entre el front (app CoDi Multiva) y el de Validación de Cuentas Beneficiarias de Banxico.
 
