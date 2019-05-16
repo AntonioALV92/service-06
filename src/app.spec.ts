@@ -2,7 +2,7 @@ import http from 'http';
 import nock from 'nock';
 import supertest from 'supertest';
 import packageJson from '../package.json';
-import routes from '../routes.json';
+import routes from '../routes/routes.json';
 import app from './app';
 import * as fixtures from './fixtures';
 import { validacionCuentasBeneficiariasController } from './controllers/validacionCuentasBeneficiarias.controller';

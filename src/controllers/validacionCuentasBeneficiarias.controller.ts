@@ -1,7 +1,7 @@
 import { wrap } from 'async-middleware';
 import { Request, Response, Router } from 'express';
 import got from 'got';
-import routes from '../../routes.json';
+import routes from '../../routes/routes.json';
 import { mapear } from '../middlewares/Mapper';
 const LoggerColors = require('logger-colors');
 const router: Router = Router();
