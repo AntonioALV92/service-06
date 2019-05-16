@@ -1,25 +1,25 @@
 export const respuestaErrorBanxico = {
-    edoPet: -1,
+    edoPet: -4,
 };
 
-export const registroInicialRequest = {
-    appIdentifier: "string",
-    deviceInfo: {
-        manufacturer: "string",
-        model: "string",
-        osName: "string",
-        osVersion: "string",
+export const validarCuentaBeneficiariaRequest = {
+    numeroCuenta: 0,
+    tipoCuenta: 10,
+    claveSPEI: 0,
+    hmac: "string",
+    dispositivoSolicitante: {
+      numeroCelular: 0,
+      digitoVerificador: 0,
     },
-    numeroCelular: 0,
-};
+  };
 
-export const registroInicialRequestBanxico = {
-    idH: "string",
-    ia: {
-        fab: "string",
-        mod: "string",
-        so: "string",
-        vSO: "string",
+export const validarCuentaBeneficiariaRequestBanxico = {
+    cb: 0,
+    tc: 10,
+    ci: 0,
+    hmac: "string",
+    ds: {         // Dispositivo solicitante
+        nc : 0,
+        dv : 0,
     },
-    nc: 0,
 };

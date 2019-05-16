@@ -1,9 +1,10 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import packageJson from '../package.json';
-import { RegistroInicialController } from './controllers';
+import { validacionCuentasBeneficiariasController } from './controllers';
 import { ErrorHandler } from './middlewares/ErrorHandler';
 import { JSONSchema } from './middlewares/JSONSchemaValidator';
+import { LoggerRequest } from './middlewares/LoggerRequest';
 // import { requests } from 'banca-movil-schemas/schemas';
 import { Mapper } from './middlewares/Mapper';
 
@@ -21,9 +22,10 @@ app.use(bodyParser.json());
 
 const schema = schemas.requests.validacionCuentasBeneficiariasRequest;
 app.use('/vendedor', [
+    LoggerRequest,
     JSONSchema(schema), // Valida petición contra JSON Schema
     Mapper,  // Mapea campos de petición a como se requiere por banxico
-    RegistroInicialController, // Manda la petición a banxico
+    validacionCuentasBeneficiariasController, // Manda la petición a banxico
 ]);
 
 // Error Handler

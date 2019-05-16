@@ -22,13 +22,13 @@ export const mapear = (object: any, m: any) => {
 };
 
 const map = {
-    numeroCelular: "nc",
-    appIdentifier: "idH",
-    deviceInfo: "ia",
-    manufacturer: "fab",
-    model: "mod",
-    osName: "so",
-    osVersion: "vSO",
+    numeroCuenta: 'cb',
+    tipoCuenta: 'tc',
+    claveSPEI: 'ci',
+    hmac: 'hmac',
+    numeroCelular: 'nc',
+    digitoVerificador: 'dv',
+    dispositivoSolicitante: 'ds',
 };
 
 

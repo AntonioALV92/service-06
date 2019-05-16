@@ -5,6 +5,7 @@ import packageJson from '../package.json';
 import routes from '../routes.json';
 import app from './app';
 import * as fixtures from './fixtures';
+import { validacionCuentasBeneficiariasController } from './controllers/validacionCuentasBeneficiarias.controller';
 
 
 describe(`al ejecutar el servidor`, () => {
@@ -33,16 +34,16 @@ describe(`al ejecutar el servidor`, () => {
     });
   });
 
-  describe('al ejecutar un POST /general/registroInicial', () => {
+  describe('Al ejecutar un POST /vendedor/validarCuentaBeneficiaria', () => {
     describe(`Si la petición no cumple con la estructura`, () => {
       test(`Debería retornar un 400 con los errores detallados`, async () => {
         const response = await request
-          .post('/general/registroInicial')
+          .post('/vendedor/validarCuentaBeneficiaria')
           .send({
             name: '33',
           });
         expect(response.status).toBe(400);
-        expect(response.body.code).toBe(-3);
+        expect(response.body.code).toBe(-4);
         expect(response.body.errors).toBeInstanceOf(Array);
       });
     });
@@ -58,7 +59,7 @@ describe(`al ejecutar el servidor`, () => {
       test(`si el servicio de banxico responde correctamente`, async () => {
         let bodyRequestBanxico: string = '';
         let contentTypeRequestBanxico: string = '';
-        nock(routes.registroInicial)
+        nock(routes.validacionCuentasBeneficiarias)
           .filteringRequestBody((body) => {
             // Obtenemos el body hacia banxico
             bodyRequestBanxico = body;
@@ -71,18 +72,17 @@ describe(`al ejecutar el servidor`, () => {
           })
           .post('')
           .reply(200, {
-            gId: "a5145da24bd47257cc581126f2a3b33d",
-            dv: 0,
+            cr: "2018100940014ec457a683daef1527",
             edoPet: 0,
           });
 
         const response = await request
-          .post('/general/registroInicial')
-          .send(fixtures.registroInicialRequest);
+          .post('/vendedor/validarCuentaBeneficiaria')
+          .send(fixtures.validarCuentaBeneficiariaRequest);
 
         // El body que va hacia el servicio de Banxico debe ser text/plain con
         // una d= al inicio del json, en string el body
-        expect(bodyRequestBanxico).toEqual('d=' + JSON.stringify(fixtures.registroInicialRequestBanxico));
+        expect(bodyRequestBanxico).toEqual('d=' + JSON.stringify(fixtures.validarCuentaBeneficiariaRequestBanxico));
         expect(contentTypeRequestBanxico).toBe('text/plain');
 
         // Si todo es correcto Banxico retorna un 200
@@ -91,21 +91,20 @@ describe(`al ejecutar el servidor`, () => {
         expect(response.status).toBe(200);
         // Debería de mapear la respuesta del servicio de banxico
         expect(response.body).toEqual({
+          claveRastreo: "2018100940014ec457a683daef1527",
           estadoPeticion: 0,
-          digitoVerificador: 0,
-          googleId: 'a5145da24bd47257cc581126f2a3b33d',
         });
       });
 
 
       test(`si el servicio de banxico no responde json`, async () => {
-        nock(routes.registroInicial)
+        nock(routes.validacionCuentasBeneficiarias)
           .post('')
           .reply(200, 'error banxico string');
 
         const response = await request
-          .post('/general/registroInicial')
-          .send(fixtures.registroInicialRequest);
+          .post('/vendedor/validarCuentaBeneficiaria')
+          .send(fixtures.validarCuentaBeneficiariaRequest);
 
         // Este servicio si debe responder con JSON
         expect(response.header['content-type']).toContain('application/json');
@@ -119,13 +118,13 @@ describe(`al ejecutar el servidor`, () => {
 
 
       test(`si el servicio de banxico responde error`, async () => {
-        nock(routes.registroInicial)
+        nock(routes.validacionCuentasBeneficiarias)
           .post('')
           .reply(404, fixtures.respuestaErrorBanxico);
 
         const response = await request
-          .post('/general/registroInicial')
-          .send(fixtures.registroInicialRequest);
+          .post('/vendedor/validarCuentaBeneficiaria')
+          .send(fixtures.validarCuentaBeneficiariaRequest);
         expect(response.status).toBe(503);
         // console.log("response.body:", response.body);
         expect(response.body.code).toBe(-404);

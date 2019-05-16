@@ -1,1 +1,1 @@
-export * from './registroInicial.controller';
+export * from './validacionCuentasBeneficiarias.controller';
